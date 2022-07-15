@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    table.dataTable
+    tbody td {
+        background-color: white;
+        padding: 2px 10px !important;
+    }
+</style>
+<div class="card w-100 p-2">
+    <div class="card-header">
+        <div class="col-12 row">
+            <div class="form-group  col-md-3">
+                <label class="">Name</label>
+                <div class="input-group">
+                    <input type="text" name="Name_tb" id="Name_tb" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group  col-md-3">
+                <label class="">Date</label>
+                <div class="input-group">
+                    <input type="date" name="Iddate" id="Iddate" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <a class="mt-2 ml-1 fa fa-primary btn btn-sm btn-primary float-right" style="padding: 7px;" href="/Home/Create"> <span class="fa fa-add"></span>Add New</a>
+            <button class=" mt-2 btn btn-warning btn-sm  float-right " onclick="Search()"><span class="fa fa-search"></span>Search</button>
+        </div>
+    </div>
+    <div class="card-body bg-white">
+        <table id="myTable" class="dataTables_wrapper dt-bootstrap4">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Dete</th>
+                    <th style="width:20px"></th>
+                    <th style="width:20px"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div style="margin-top:10%;" class="modal fade" id="partialModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="col-md-12 mt-2" id="contentmodal">
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function Search() {
+            var Iddate = $("#Iddate").val();
+            if (!Date.parse(Iddate)) {
+                Iddate = "";
+            }
+            var Name_tb = $("#Name_tb").val();
+            var trm = "";
+            Load(trm, Name_tb, Iddate);
+        }
+        function Edit(id) {
+            $.ajax({
+                type: "GET",
+                url: "/Home/Edit",
+                data: { "id": id },
+                success: function (response) {
+                    $("#contentmodal").html(response);
+                    $("#partialModal").modal('show');
+                },
+                failure: function (response) { },
+                error: function (response) { }
+            });
+        }
+        function Delete(id) {
+            $.ajax({
+                type: "GET",
+                url: "/Home/Delete",
+                data: { "id": id },
+                success: function (response) {
+                    $("#contentmodal").html(response);
+                    $("#partialModal").modal('show');
+                },
+                failure: function (response) { },
+                error: function (response) { }
+            });
+        }
+        $(document).ready(function () {
+            Load(trm = "");
+        });
+        function Load(trm = "", Name_tb = "", Iddate = "") {
+            setTimeout(function () {
+                $("#myTable").DataTable({
+                    "processing": false, // for show progress bar
+                    "serverSide": true, // for process server side
+                    "filter": false, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "destroy": true,  // Ro Remove the error (Datatables warning(table id = 'example'): cannot reinitialise data table)
+                    //  "fixedHeader": true,
+                    "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+                    "ajax": {
+                        url: "/Home/LoadData",
+                        data: { trm: trm, Name_tb: Name_tb, Iddate: Iddate },
+                        type: "POST",
+                        datatype: "json",
+                    },
+                    "columns": [
+
+                        { "data": "id", "name": "id", "autoWidth": true },
+                        { "data": "name", "name": "name", "autoWidth": true },
+                        { "data": "description", "name": "description", "autoWidth": true },
+                        { "data": "price", "name": "price", "autoWidth": true },
+                        { "data": "date", "name": "date", "autoWidth": true },
+
+                        {
+                            "render": function (data, type, row) { return "<a class='btn btn-sm btn-warning' onclick='Edit(" + row.id + ")'><span class='fa fa-edit'></span></a>"; }
+                        }
+                        ,
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return "<a  onclick='Delete(" + row.id + ")' class='btn btn-sm btn-danger' ><span class='fa fa-trash'></span></a>";
+                            }
+                        },
+                    ]
+                });
+            }, 100);
+
+        }
+    </script>
+}

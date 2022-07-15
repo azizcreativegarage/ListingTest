@@ -1,0 +1,113 @@
+﻿@model ListingTest.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .card-body {
+        min-height: 1px !important;
+        padding: 5px !important;
+    }
+    .input-group 
+    {
+        margin-top:0px;
+    }
+    .form-group {
+        margin-top: -10px;
+    }
+</style>
+<div class="col-12 text-black">
+
+    <div class="content-header   col-md-12 col-sm-12 col-lg-12">
+        <div class="container-fluid  row col-md-12 col-sm-12 col-lg-12">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <h4 class="m-0"><span class="fa fa-book"></span>  @ViewBag.Title</h4>
+            </div><!-- /.col -->
+            <div class="col-sm-6 col-md-6 col-lg-6">
+
+                <a class="fa fa-primary float-right btn btn-primary" href="/Room/Index"><span class="fa fa-arrow-alt-circle-left"></span> Back To List</a>
+            </div><!-- /.col -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <div class="card row col-12" style="margin-left: 1px!important;">
+        <form id="createForm" asp-action="Create" asp-controller="Room" data-ajax="true" data-ajax-method="post" data-ajax-complete="Complete">
+            <div style="margin-top:10px"></div>
+            <div class="col-md-12 card-body row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group col-6">
+                    <label asp-for="Name" class="control-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="Description" class="control-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="Price" class="control-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="Date" class="control-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <input asp-for="Date" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <button type="submit" class="btn btn-primary" style="float:right"><span class="fa fa-edit"></span> Create</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+
+        function Complete(response) {
+
+            response = response.responseJSON;
+            if (response.returnStatus == 0 || response.status == true) {
+
+
+                swal("Good job!", "You clicked the button!", "success");
+
+                // window.location.href = response.redirectLink;
+
+            }
+            else {
+                swal("Error!", response.message, "error");
+            }
+        }
+    </script>
+
+}
+
