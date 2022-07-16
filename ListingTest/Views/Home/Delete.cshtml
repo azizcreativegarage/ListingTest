@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = null;//"~/Views/Shared/_Layout.cshtml";
+    Layout = null; 
 }
  
 <div class="content-header   col-md-12 col-sm-12 col-lg-12">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group col-6">
                     <label asp-for="Date" class="control-label"></label>
-                    <label class="form-control">@Model.Date</label>
+                    <label class="form-control">@Model.Date.ToShortDateString()</label>
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
 
@@ -67,12 +67,22 @@
         function DeleteComplete(response) {
 
             response = response.responseJSON;
+            if (response.returnStatus == 3 || response.status == true) {
+                swal("Products Detail!", "Successfully Updated!", "success");
+
+                $('#partialModal').modal('hide')
+                window.location.href = "/home/index";
+            }
+            else
             if (response.returnStatus == 0 || response.status == true) {
 
 
                 swal("Deleted!", "Data Deleted!", "success");
-                Load(trm = "");
-                $('#partialModal').modal('hide');             
+          
+                $('#partialModal').modal('hide');
+
+                Load(trm = "", Name_tb = "", Iddate = "");
+           // window.location.href = "/home/index";
           }
             else {
                     swal("Error!", response.message, "error");

@@ -58,7 +58,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                     </div>
-                    <input asp-for="Date" class="form-control" />
+                    <input type="date" asp-for="Date" class="form-control" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
             </div>
@@ -72,14 +72,18 @@
 <script>
     function EditComplete(response) {
         response = response.responseJSON;
+   
         if (response.returnStatus == 0 || response.status == true) {
-            swal("Products Detail!", "Successfully Updated!", "success");
-            Load(trm = "");
+            swal("Products Detail!", response.message, "success");
+            
             $('#partialModal').modal('hide')
-
+            Load(trm = "", Name_tb = "", Iddate = "");
         }
         else {
+         
             swal("Error!", response.message, "error");
+            window.location.href = "/home/index";
+
         }
     }
 </script>

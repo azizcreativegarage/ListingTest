@@ -27,8 +27,8 @@
             </div>
         </div>
         <div class="col-md-12">
-            <a class="mt-2 ml-1 fa fa-primary btn btn-sm btn-primary float-right" style="padding: 7px;" href="/Home/Create"> <span class="fa fa-add"></span>Add New</a>
-            <button class=" mt-2 btn btn-warning btn-sm  float-right " onclick="Search()"><span class="fa fa-search"></span>Search</button>
+            <a class="mt-2 ml-1 btn   btn-primary float-right"   href="/Home/Create"> <span class="fa fa-add"></span> Add New</a>
+            <button class=" mt-2 btn btn-warning    float-right " onclick="Search()"><span class="fa fa-search"></span>Search</button>
         </div>
     </div>
     <div class="card-body bg-white">
@@ -57,6 +57,7 @@
 </div>
 @section Scripts{
     <script>
+
         function Search() {
             var Iddate = $("#Iddate").val();
             if (!Date.parse(Iddate)) {
@@ -87,13 +88,14 @@
                 success: function (response) {
                     $("#contentmodal").html(response);
                     $("#partialModal").modal('show');
+                    
                 },
                 failure: function (response) { },
                 error: function (response) { }
             });
         }
         $(document).ready(function () {
-            Load(trm = "");
+            Load(trm = "", Name_tb = "", Iddate = "")
         });
         function Load(trm = "", Name_tb = "", Iddate = "") {
             setTimeout(function () {

@@ -26,13 +26,13 @@
             </div><!-- /.col -->
             <div class="col-sm-6 col-md-6 col-lg-6">
 
-                <a class="fa fa-primary float-right btn btn-primary" href="/Room/Index"><span class="fa fa-arrow-alt-circle-left"></span> Back To List</a>
+             
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>
 
     <div class="card row col-12" style="margin-left: 1px!important;">
-        <form id="createForm" asp-action="Create" asp-controller="Room" data-ajax="true" data-ajax-method="post" data-ajax-complete="Complete">
+        <form id="createForm" asp-action="Create" asp-controller="Home" data-ajax="true" data-ajax-method="post" data-ajax-complete="Complete">
             <div style="margin-top:10px"></div>
             <div class="col-md-12 card-body row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -43,6 +43,7 @@
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <input asp-for="Name" class="form-control" />
+                        <br />
                         <span asp-validation-for="Name" class="text-danger"></span>
 
                     </div>
@@ -53,7 +54,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <input asp-for="Description" class="form-control" />
+                        <input asp-for="Description" class="form-control" /><br />
                         <span asp-validation-for="Description" class="text-danger"></span>
 
                     </div>
@@ -64,7 +65,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <input asp-for="Price" class="form-control" />
+                        <input asp-for="Price" class="form-control" /><br />
                         <span asp-validation-for="Price" class="text-danger"></span>
 
                     </div>
@@ -75,13 +76,13 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <input asp-for="Date" class="form-control" />
+                        <input type="date" asp-for="Date" class="form-control" /><br/>
                         <span asp-validation-for="Date" class="text-danger"></span>
 
                     </div>
                 </div>
                 <div class="form-group col-12">
-                    <button type="submit" class="btn btn-primary" style="float:right"><span class="fa fa-edit"></span> Create</button>
+                    <a class="mb-2  btn btn-warning mr-2" href="/Home/Index"><span class="fa fa-arrow-alt-circle-left"></span><small>  Back</small></a>   <button type="submit" class="btn  btn-primary" style="float:right"><span class="fa fa-edit"></span> Create</button>
                 </div>
 
             </div>
@@ -98,10 +99,10 @@
             if (response.returnStatus == 0 || response.status == true) {
 
 
-                swal("Good job!", "You clicked the button!", "success");
+                swal(response.message, "success");
 
-                // window.location.href = response.redirectLink;
-
+                //window.location.href = response.redirectLink;
+                setTimeout(function () { window.location.href = "/home/index"; },1000);
             }
             else {
                 swal("Error!", response.message, "error");

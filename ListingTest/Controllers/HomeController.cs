@@ -51,21 +51,56 @@ namespace ListingTest.Controllers
             var v = dd.ToList();       
             recordsTotal = v.Count();
             #region Getting Required Field
-            var data = v.Skip(skip).Take(pageSize).ToList();
-            //.Select(s=>new {
-            //id=s.Id,
-            //name=s.Name,
-            //    description = s.Description,
-            //    price=s.Price,
-            //    date=s.Date.ToString("dd-MM-yyyy"),
-            //});
+            var data = v.Skip(skip).Take(pageSize).DefaultIfEmpty();
+
+            if (data.FirstOrDefault()!=null)
+            {
+              var  data1= data.ToList().Select(s => new
+                   {
+                       id = s.Id,
+                       name = s.Name,
+                       description = s.Description,
+                       price = s.Price,
+                       date = s.Date.ToString("dd-MM-yyyy"),
+                   }).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data1 });
+
+            }
+
             #endregion
-            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data.ToList() });
         }
         public IActionResult Index()
         {
             return View();
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create( Product product)
+        {
+            try
+            {
+                // Checking for already exist in system
+                if (_db.Products.AsNoTracking().Where(d => d.Name.Trim().ToLower() == product.Name.Trim().ToLower()).Any())
+                {
+                    return Json(new { message = "The Product is already exist", returnStatus = 1 });
+                }
+                _db.Products.Add(product);
+                _db.SaveChanges();
+                return Json(new { message = "Successfully Added", returnStatus = 0, create = "true" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex.Message, returnStatus = 1 });
+            }
+        }
+
+
         public ActionResult Edit(int id)
         {
             var data = _db.Products.AsNoTracking().Where(a => a.Id == id).FirstOrDefault();
@@ -77,13 +112,19 @@ namespace ListingTest.Controllers
         {
             try
             {
+                // Checking if any Item except the current item already exist then Not allow to enter
+                if (_db.Products.AsNoTracking().Where(d => d.Name.Trim().ToLower() == product.Name.Trim().ToLower() && d.Id!=product.Id).Any())
+                {
+                    return Json(new { message = "The Product is already exist with same name", returnStatus = 1 });
+                }
+
                 Product acc = new Product();
                 acc = _db.Products.Where(i => i.Id == product.Id).FirstOrDefault();
                 acc.Id = product.Id;
                 acc.Name = product.Name;
                _db.Products.Update(acc);
                _db.SaveChanges();
-                return Json(new { message = "Updated", returnStatus = 0, create = "true" });
+                return Json(new { message = "Successfully Updated", returnStatus = 0, create = "true" });
             }
             catch (Exception ex)
             {
@@ -103,6 +144,12 @@ namespace ListingTest.Controllers
             {
                 _db.Products.Remove(collection);
                 _db.SaveChanges();
+
+                var d = _db.Products.Count();
+                if (d < 1)
+                {
+                    return Json(new { message = "Deleted", returnStatus = 3, create = "true" });
+                }
                 return Json(new { message = "Deleted", returnStatus = 0, create = "true" });
             }
             catch (Exception ex)
