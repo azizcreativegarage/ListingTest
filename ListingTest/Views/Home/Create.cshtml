@@ -1,7 +1,7 @@
 ﻿@model ListingTest.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add New Item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
@@ -36,7 +36,8 @@
             <div style="margin-top:10px"></div>
             <div class="col-md-12 card-body row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group col-6">
+
+                <div class="form-group col-4">
                     <label asp-for="Name" class="control-label"></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -44,40 +45,42 @@
                         </div>
                         <input asp-for="Name" class="form-control" />
                         <br />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <span asp-validation-for="Name" class="text-danger col-md-12"></span>
 
                     </div>
                 </div>
-                <div class="form-group col-6">
-                    <label asp-for="Description" class="control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                        </div>
-                        <input asp-for="Description" class="form-control" /><br />
-                        <span asp-validation-for="Description" class="text-danger"></span>
 
-                    </div>
-                </div>
-                <div class="form-group col-6">
+                <div class="form-group col-4">
                     <label asp-for="Price" class="control-label"></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <input asp-for="Price" class="form-control" /><br />
-                        <span asp-validation-for="Price" class="text-danger"></span>
+                        <span asp-validation-for="Price" class="text-danger col-md-12"></span>
 
                     </div>
                 </div>
-                <div class="form-group col-6">
+                <div class="form-group col-4">
                     <label asp-for="Date" class="control-label"></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <input type="date" asp-for="Date" class="form-control" /><br/>
-                        <span asp-validation-for="Date" class="text-danger"></span>
+                        <input type="date" asp-for="Date" class="form-control" /><br />
+                        <span c asp-validation-for="Date" class="text-danger col-md-12"></span>
+
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label asp-for="Description" class="control-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class=" fa fa-info"></i></span>
+                        </div>
+                        <textarea asp-for="Description" class="form-control" ></textarea>
+                      <br />
+                        <span asp-validation-for="Description" class="text-danger col-md-12"></span>
 
                     </div>
                 </div>
