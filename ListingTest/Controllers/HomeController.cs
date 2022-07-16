@@ -122,6 +122,7 @@ namespace ListingTest.Controllers
                 acc = _db.Products.Where(i => i.Id == product.Id).FirstOrDefault();
                 acc.Id = product.Id;
                 acc.Name = product.Name;
+                acc.Description = product.Description;
                _db.Products.Update(acc);
                _db.SaveChanges();
                 return Json(new { message = "Successfully Updated", returnStatus = 0, create = "true" });
